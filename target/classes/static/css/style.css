@@ -1,0 +1,289 @@
+body.dark-theme {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #1e1e1e;
+    color: #ccc;
+  }
+  
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 300px;
+    padding: 20px;
+    background-color: #2c2c2c;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-right: 1px solid #444;
+    box-sizing: border-box;
+  }
+  
+  .sidebar h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: normal;
+    font-size: 2rem;
+  }
+  
+  fieldset{
+    border-radius: 20px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  fieldset legend{
+    padding:  0 5px 0 5px;
+  }
+
+  .sidebar fieldset select{
+    width: 80%;
+    border: none;
+    border-radius: 10px;
+    color: #cccccc;
+    cursor: pointer;
+    height: 30px;
+    background: transparent;
+  }
+
+  .sidebar fieldset select option{
+    background: #1e1e1e;
+  }
+
+  .sidebar fieldset select:hover{
+    background: rgba(155, 155, 155, 0.1);
+  }
+
+  .sidebar fieldset select:focus{
+    border-style: none;
+    outline: 0
+  }
+  
+  .sidebar fieldset #deletarPreset{
+    width: 30px;
+    height: 30px;
+    background-color: #ba110c;
+    border-radius: 4px;
+    border-style: none;
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: .2s;
+  }
+
+  .sidebar fieldset button:hover{
+    scale: 1.1;
+    transition: .2s;
+  }
+
+  .sliders label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    gap: 5px;
+  }
+  
+  input[type="range"] {
+    width: 100%;
+    accent-color: #cccccc;
+    background-color: #3a3a3a;
+    border-radius: 5px;
+    height: 4px;
+  }
+
+  fieldset input[type="text"]{
+    height: 30px;
+    background: rgba(155, 155, 155, 0.1);
+    border-radius: 10px;
+    border-style: none;
+    color: #cccccc;
+    outline: 0;
+    padding-left: 10px;
+  }
+
+  #btnSalvarPreset{
+    width: 30px;
+    height: 30px;
+    background-color: #8d8d8d;
+    border-radius: 4px;
+    border-style: none;
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(75, 75, 75);
+    cursor: pointer;
+    transition: .2s;
+  }
+
+  #btnSalvarPreset:hover{
+    background-color: #5b9938;
+    color: rgb(255, 255, 255);
+  }
+  
+  main {
+    flex: 1;
+    padding: 20px;
+    background-color: #1e1e1e;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .upload-box {
+    width: 100%;
+    max-width: 500px;
+    height: 250px;
+    border: 2px dashed #555;
+    border-radius: 10px;
+    background-color: #2b2b2b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+  }
+  
+  .upload-box:hover {
+    border-color: #dfdfdf;
+  }
+  
+  .upload-content {
+    text-align: center;
+    color: #ccc;
+  }
+  
+  .upload-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+  
+  .upload-text {
+    font-size: 0.9rem;
+  }
+  
+  #controls{
+    display: flex;
+    justify-content: space-between;
+    width: 50vw;
+    max-width: 50vw;
+  }
+
+  #preview {
+    display: none;
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 10px;
+    transition: outline 0.2s ease;
+  }
+  
+  #new-image-btn {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: transparent;
+    border: 1px solid #dddddd;
+    color: #dddddd;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  #new-image-btn:hover {
+    background-color: #dddddd;
+    color: #000;
+  }
+  
+  .reset-btn {
+    width: 45px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: transparent;
+    border: 1px solid #dddddd;
+    color: #dddddd;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .reset-btn:hover {
+    background-color: #dddddd;
+    color: #000;
+  }
+
+  .zoom-controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .zoom-btn {
+    font-size: 1.5rem;
+    background-color: transparent;
+    border: 1px solid #dddddd;
+    color: #dddddd;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .zoom-btn:hover {
+    background-color: #dddddd;
+    color: #000;
+  }
+  
+  .preview-wrapper {
+    width: 50vw;
+    height: 50vh;
+    max-width: 50vw;
+    max-height: 50vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #222;
+    border-radius: 10px;
+    position: relative;
+    cursor: grab;
+  }
+  
+  #preview {
+    transition: transform 0.1s ease;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: all;
+    cursor: grab;
+    position: absolute;
+  }
+  
+  #resetView {
+    background-color: transparent;
+    border: 1px solid #f39c12;
+    color: #f39c12;
+  }
+  
+  #resetView:hover {
+    background-color: #f39c12;
+    color: #000;
+  }
+
+ 
+  
+  
+  
+  

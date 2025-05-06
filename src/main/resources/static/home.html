@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Editor de Imagem</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark-theme">
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Opções</h2>
+
+      <fieldset id="filedset-preset">
+        <legend>Escolher Preset: </legend>
+        <select name="presets" id="presets">
+          <option value>Selecione...</option>
+        </select>
+        <button id="deletarPreset">&times;</button> </button>
+      </fieldset>
+
+      <div class="sliders">
+        <label>Saturação: <input type="range" id="saturacao" min="-100" max="100" value="0" ondblclick="zerarEdicao('saturacao')"/></label>
+        <label>Exposição: <input type="range" id="exposicao" min="-100" max="100" value="0" ondblclick="zerarEdicao('exposicao')"/></label>
+        <label>Contraste: <input type="range" id="contraste" min="-100" max="100" value="0" ondblclick="zerarEdicao('contraste')"/></label>
+        <label>Realece: <input type="range" id="realce" min="-100" max="100" value="0" ondblclick="zerarEdicao('realce')"/></label>
+        <label>Sombras: <input type="range" id="sombras" min="-100" max="100" value="0" ondblclick="zerarEdicao('sombras')"/></label>
+        <label>Pontos Brancos: <input type="range" id="brancos" min="0" max="100" value="0" ondblclick="zerarEdicao('brancos')"/></label>
+        <label>Pontos Pretos: <input type="range" id="pretos" min="0" max="100" value="0" ondblclick="zerarEdicao('pretos')"/></label>
+        <label>Textura: <input type="range" id="textura" min="-100" max="100" value="0" ondblclick="zerarEdicao('textura')"/></label>
+      </div>
+      <div class="addPreset">
+        <h2>Preset</h2>
+        <fieldset>
+          <legend>Nome</legend>
+          <input type="text" id="presetNome" placeholder="Digite um nome...">
+          <button id="btnSalvarPreset">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy-fill" viewBox="0 0 16 16">
+              <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
+              <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
+            </svg>
+          </button>
+        </fieldset>
+      </div>
+    </aside>
+
+    <main>
+        <div class="preview-wrapper">
+          <div class="upload-box" id="uploadBox">
+            <input type="file" id="imageInput" accept="image/*" hidden />
+            <div class="upload-content" id="uploadTrigger">
+              <div class="upload-icon">📁</div>
+              <div class="upload-text">Clique ou arraste uma imagem aqui</div>
+            </div>
+          </div>
+          <img id="preview" draggable="false"/>
+        </div>
+      
+        <div id="controls">
+          <input type="file" id="imageInput" accept="image/*" hidden />
+          <button id="new-image-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+              <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+              <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z"/>
+            </svg>
+          </button>
+
+          <div class="zoom-controls">
+            <button id="zoomOut" class="zoom-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-zoom-out" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11M13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"/>
+                <path d="M10.344 11.742q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1 6.5 6.5 0 0 1-1.398 1.4z"/>
+                <path fill-rule="evenodd" d="M3 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
+              </svg>
+            </button>
+            <button id="resetView" class="zoom-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+              </svg>
+            </button>
+            <button id="zoomIn" class="zoom-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-zoom-in" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11M13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"/>
+                <path d="M10.344 11.742q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1 6.5 6.5 0 0 1-1.398 1.4z"/>
+                <path fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5"/>
+              </svg>
+            </button>
+          </div>
+          <button id="resetButton" class="reset-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16">
+              <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
+              <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
+            </svg>
+          </button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Script para upload e visualização -->
+  <script>
+    const uploadBox = document.getElementById("uploadBox");
+    const uploadTrigger = document.getElementById("uploadTrigger");
+    const imageInput = document.getElementById("imageInput");
+    const previewImage = document.getElementById("preview");
+
+    let imagemAtual = null;
+
+    uploadTrigger.addEventListener("click", () => {
+      imageInput.click();
+    });
+
+    imageInput.addEventListener("change", () => {
+      if (imageInput.files.length > 0) {
+        handleFile(imageInput.files[0]);
+      }
+    });
+
+    uploadBox.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      uploadBox.style.borderColor = "#00bcd4";
+    });
+
+    uploadBox.addEventListener("dragleave", () => {
+      uploadBox.style.borderColor = "#555";
+    });
+
+    uploadBox.addEventListener("drop", (e) => {
+      e.preventDefault();
+      uploadBox.style.borderColor = "#555";
+      if (e.dataTransfer.files.length > 0) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    previewImage.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  previewImage.style.outline = "2px dashed #00bcd4";
+});
+
+previewImage.addEventListener("dragleave", () => {
+  previewImage.style.outline = "none";
+});
+
+previewImage.addEventListener("drop", (e) => {
+  e.preventDefault();
+  previewImage.style.outline = "none";
+
+  if (e.dataTransfer.files.length > 0) {
+    handleFile(e.dataTransfer.files[0]);
+  }
+});
+
+
+function handleFile(file) {
+  if (!file.type.startsWith("image/")) return;
+  
+  imagemAtual = file; // importante para atualizar no backend
+  
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    previewImage.src = e.target.result;
+    previewImage.style.display = "block";
+    uploadBox.style.display = "none";
+    
+    // Atualiza com imagem processada do backend
+    setTimeout(atualizarImagem, 100);
+  };
+  reader.readAsDataURL(file);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const newImageBtn = document.getElementById("new-image-btn");
+  const imageInput = document.getElementById("imageInput");
+
+  newImageBtn.addEventListener("click", function () {
+    imageInput.click(); // simula clique no input escondido
+  });
+
+  imageInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const preview = document.getElementById("preview");
+        preview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+});
+
+</script>
+
+<!-- Script para edição com sliders -->
+<script>
+  const sliders = ["saturacao", "exposicao", "contraste", "realce", "sombras", "brancos", "pretos", "textura"];
+  const valores = {};
+  const previewImg = document.getElementById("preview");
+  
+  async function zerarEdicao(id){
+    document.getElementById(id).value = 0
+    atualizarImagem();
+  }
+    imagemAtual = null; // <-- CORRETO
+    let debounceTimeout = null;
+  
+    // Sliders com debounce
+    sliders.forEach((id) => {
+      valores[id] = document.getElementById(id);
+  
+      valores[id].addEventListener("input", () => {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+          atualizarImagem();
+        }, 10); // 1 segundo de espera
+      });
+    });
+  
+    async function atualizarImagem() {
+      if (!imagemAtual) return;
+  
+      const formData = new FormData();
+      formData.append("imagem", imagemAtual);
+  
+      sliders.forEach((id) => {
+        formData.append(id, valores[id].value);
+      });
+  
+      try {
+        const response = await fetch("http://localhost:8080/editar", {
+          method: "POST",
+          body: formData
+        });
+  
+        if (!response.ok) {
+          throw new Error("Erro ao processar imagem");
+        }
+  
+        const blob = await response.blob();
+        const novaUrl = URL.createObjectURL(blob);
+        previewImg.src = novaUrl;
+      } catch (err) {
+        console.error("Erro ao atualizar imagem:", err);
+      }
+    }
+
+    const resetButton = document.getElementById("resetButton");
+
+    resetButton.addEventListener("click", () => {
+      sliders.forEach((id) => {
+        valores[id].value = 0; // Zera todos os sliders
+      });
+
+      if (imagemAtual) {
+        atualizarImagem(); // Reenvia a imagem original sem edição
+      }
+    });
+
+    const zoomInBtn = document.getElementById("zoomIn");
+const zoomOutBtn = document.getElementById("zoomOut");
+let zoomLevel = 1;
+
+zoomInBtn.addEventListener("click", () => {
+  zoomLevel += 0.2;
+  previewImg.style.transform = `scale(${zoomLevel})`;
+});
+
+zoomOutBtn.addEventListener("click", () => {
+  zoomLevel = Math.max(1.0, zoomLevel - 0.6);
+  previewImg.style.transform = `scale(${zoomLevel})`;
+});
+
+let isDragging = false;
+let startX, startY;
+let translateX = 0;
+let translateY = 0;
+
+const previewWrapper = document.querySelector(".preview-wrapper");
+
+previewImg.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  startX = e.clientX - translateX;
+  startY = e.clientY - translateY;
+  previewWrapper.style.cursor = "grabbing";
+});
+
+document.addEventListener("mouseup", () => {
+  isDragging = false;
+  previewWrapper.style.cursor = "grab";
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+  e.preventDefault();
+
+  translateX = e.clientX - startX;
+  translateY = e.clientY - startY;
+
+  previewImg.style.transform = `scale(${zoomLevel}) translate(${translateX}px, ${translateY}px)`;
+});
+
+const resetViewBtn = document.getElementById("resetView");
+
+resetViewBtn.addEventListener("click", () => {
+  zoomLevel = 1;
+  translateX = 0;
+  translateY = 0;
+
+  previewImg.style.transform = `scale(${zoomLevel}) translate(${translateX}px, ${translateY}px)`;
+});
+
+  </script>
+
+<!-- Script para mostrar presets -->
+<script>
+  // Função para carregar presets
+  async function carregarPresets() {
+    try {
+      const response = await fetch("http://localhost:8080/presets/todos");
+
+      if (!response.ok) {
+        throw new Error("Erro ao buscar presets");
+      }
+
+      const presets = await response.json();
+      
+      const select = document.getElementById("presets");
+      select.innerHTML = '<option value="">Selecione...</option>';
+
+      presets.forEach(preset => {
+        const option = document.createElement("option");
+        option.value = preset.id_preset; // Usa id_preset do banco
+        option.textContent = preset.nome;
+        select.appendChild(option);
+      });
+
+    } catch (err) {
+      console.error("Erro ao carregar presets:", err);
+    }
+  }
+  
+  // Chama a função ao carregar a página
+  window.addEventListener("DOMContentLoaded", carregarPresets);
+
+  // Função para salvar preset
+  document.getElementById("btnSalvarPreset").addEventListener("click", async () => {
+    const nome = document.getElementById("presetNome").value.trim();
+    if (!nome) {
+      alert("Dê um nome para o preset.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("nome", nome);
+    
+    // Adiciona valores dos sliders
+    ["saturacao", "exposicao", "contraste", "realce", "sombras", "brancos", "pretos", "textura"].forEach((id) => {
+      formData.append(id, document.getElementById(id).value);
+    });
+
+    try {
+      const response = await fetch("http://localhost:8080/presets/adicionar", {
+        method: "POST",
+        body: formData,
+      });
+
+      const message = await response.text();
+      console.log(message);
+      alert(message);
+      carregarPresets();
+
+    } catch (err) {
+      console.error("Erro ao salvar preset:", err);
+    }
+  });
+</script>
+<script>
+  document.getElementById("presets").addEventListener("change", async (e) => {
+  const presetId = e.target.value;
+  if (presetId) {
+    try {
+      // Requisição para obter as configurações do preset selecionado
+      const response = await fetch(`http://localhost:8080/presets/${presetId}`);
+
+      if (!response.ok) {
+        throw new Error("Erro ao buscar preset");
+      }
+
+      const preset = await response.json(); // resposta com os dados do preset
+
+      // Atualiza os sliders com os valores do preset
+      sliders.forEach((id) => {
+        const slider = document.getElementById(id);
+        slider.value = preset[id] || 0; // Atribui o valor do preset ou 0 se não existir
+      });
+
+      // Atualiza a imagem com os valores do preset
+      await atualizarImagem(); // Isso irá aplicar as edições na imagem com os novos valores
+
+    } catch (err) {
+      console.error("Erro ao carregar preset:", err);
+    }
+  }
+});
+</script>
+<script>
+  document.getElementById("deletarPreset").addEventListener("click", async () => {
+    const select = document.getElementById("presets");
+    const selectedValue = select.value;
+
+    if (!selectedValue) {
+      alert("Nenhum preset foi selecionado.");
+      return;
+    }
+
+    const confirmacao = confirm("Tem certeza que deseja deletar este preset?");
+    if (!confirmacao) return;
+
+    try {
+      const response = await fetch(`http://localhost:8080/presets/delete/${selectedValue}`, {
+        method: "DELETE"
+      });
+
+      const message = await response.text();
+      alert(message);
+      console.log(message)
+
+      // Recarrega a lista de presets após a exclusão
+      carregarPresets();
+
+    } catch (err) {
+      console.error("Erro ao deletar preset:", err);
+      alert("Erro ao deletar preset.");
+    }
+  });
+</script>
+  
+</body>
+</html>
