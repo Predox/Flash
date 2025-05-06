@@ -115,13 +115,13 @@ Este projeto é uma aplicação web para edição de imagens com funcionalidades
 
 ### Backend
 
-  
+Abra o terminal da pasta baixada e execute os seguintes comandos
 
 ```bash
 
-cd  backend
+mvn clean install
 
-./mvnw  spring-boot:run
+mvn spring-boot:run
 
 ```
 
