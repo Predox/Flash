@@ -1,10 +1,18 @@
 package com.flash.editorimagem.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import com.flash.editorimagem.model.usuarios;
+
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -16,7 +24,7 @@ public class UsuarioController {
     @PostMapping("/adicionar")
     public String adicionarUsuario(@RequestBody usuarios usuario) {
         String sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
-        
+
         // Executa a inserção no banco de dados
         int result = jdbcTemplate.update(sql, usuario.getNome(), usuario.getEmail(), usuario.getSenha());
 
@@ -31,7 +39,7 @@ public class UsuarioController {
     public String excluirUsuario(@PathVariable int id) {
 
         String sql = "DELETE FROM usuarios WHERE id_usuario = ?";
-        
+
         int result = jdbcTemplate.update(sql, id);
 
         if (result > 0) {
@@ -42,18 +50,16 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public String loginUsuario(@RequestBody usuarios usuario) {
-        String sql = "SELECT COUNT(*) FROM usuarios WHERE email = ? AND senha = ?";
-        
-        // Executa a consulta para verificar se existe um usuário com o e-mail e senha informados
-        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, usuario.getEmail(), usuario.getSenha());
-
-        if (count != null && count > 0) {
-            return "Login bem-sucedido!";
-        } else {
-            return "Usuário ou senha inválidos.";
-        }
+public ResponseEntity<String> loginUsuario(@RequestBody usuarios usuario, HttpSession session) {
+    String sql = "SELECT id FROM usuarios WHERE email = ? AND senha = ?";
+    Long idUsuario = jdbcTemplate.queryForObject(sql, Long.class, usuario.getEmail(), usuario.getSenha());
+    if (idUsuario != null) {
+        session.setAttribute("usuarioId", idUsuario);
+        return ResponseEntity.ok("Login bem-sucedido!");
+    } else {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos.");
     }
+}
 
     @GetMapping("/teste-conexao")
     public String testarConexao() {
@@ -63,5 +69,23 @@ public class UsuarioController {
         } catch (Exception e) {
             return "Erro ao conectar com o banco de dados: " + e.getMessage();
         }
+    }
+
+    @GetMapping("/perfil/dados")
+public ResponseEntity<Map<String, Object>> getDadosPerfil(HttpSession session) {
+    Long usuarioId = (Long) session.getAttribute("usuarioId");
+
+    if (usuarioId == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    String sqlUsuario = "SELECT nome, email FROM usuarios WHERE id = ?";
+    Map<String, Object> dadosUsuario = jdbcTemplate.queryForMap(sqlUsuario, usuarioId);
+
+    Map<String, Object> resposta = new HashMap<>();
+    resposta.put("nome", dadosUsuario.get("nome"));
+    resposta.put("email", dadosUsuario.get("email"));
+
+    return ResponseEntity.ok(resposta);
 }
 }
