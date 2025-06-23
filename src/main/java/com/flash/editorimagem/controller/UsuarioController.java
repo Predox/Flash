@@ -19,17 +19,16 @@ import jakarta.servlet.http.HttpSession;
 public class UsuarioController {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate; // Injeção do JdbcTemplate para trabalhar com JDBC
+    private JdbcTemplate jdbcTemplate;
 
     @PostMapping("/adicionar")
     public String adicionarUsuario(@RequestBody usuarios usuario) {
         String sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
 
-        // Executa a inserção no banco de dados
         int result = jdbcTemplate.update(sql, usuario.getNome(), usuario.getEmail(), usuario.getSenha());
 
         if (result > 0) {
-            return "Usuário adicionado com sucesso!";
+            return "Cadastro bem-sucedido!";
         } else {
             return "Erro ao adicionar usuário.";
         }
@@ -50,16 +49,16 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-public ResponseEntity<String> loginUsuario(@RequestBody usuarios usuario, HttpSession session) {
-    String sql = "SELECT id FROM usuarios WHERE email = ? AND senha = ?";
-    Long idUsuario = jdbcTemplate.queryForObject(sql, Long.class, usuario.getEmail(), usuario.getSenha());
-    if (idUsuario != null) {
-        session.setAttribute("usuarioId", idUsuario);
-        return ResponseEntity.ok("Login bem-sucedido!");
-    } else {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos.");
+    public ResponseEntity<String> loginUsuario(@RequestBody usuarios usuario, HttpSession session) {
+        String sql = "SELECT id FROM usuarios WHERE email = ? AND senha = ?";
+        Long idUsuario = jdbcTemplate.queryForObject(sql, Long.class, usuario.getEmail(), usuario.getSenha());
+        if (idUsuario != null) {
+            session.setAttribute("usuarioId", idUsuario);
+            return ResponseEntity.ok("Login bem-sucedido!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos.");
+        }
     }
-}
 
     @GetMapping("/teste-conexao")
     public String testarConexao() {
@@ -72,20 +71,20 @@ public ResponseEntity<String> loginUsuario(@RequestBody usuarios usuario, HttpSe
     }
 
     @GetMapping("/perfil/dados")
-public ResponseEntity<Map<String, Object>> getDadosPerfil(HttpSession session) {
-    Long usuarioId = (Long) session.getAttribute("usuarioId");
+    public ResponseEntity<Map<String, Object>> getDadosPerfil(HttpSession session) {
+        Long usuarioId = (Long) session.getAttribute("usuarioId");
 
-    if (usuarioId == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (usuarioId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        String sqlUsuario = "SELECT nome, email FROM usuarios WHERE id = ?";
+        Map<String, Object> dadosUsuario = jdbcTemplate.queryForMap(sqlUsuario, usuarioId);
+
+        Map<String, Object> resposta = new HashMap<>();
+        resposta.put("nome", dadosUsuario.get("nome"));
+        resposta.put("email", dadosUsuario.get("email"));
+
+        return ResponseEntity.ok(resposta);
     }
-
-    String sqlUsuario = "SELECT nome, email FROM usuarios WHERE id = ?";
-    Map<String, Object> dadosUsuario = jdbcTemplate.queryForMap(sqlUsuario, usuarioId);
-
-    Map<String, Object> resposta = new HashMap<>();
-    resposta.put("nome", dadosUsuario.get("nome"));
-    resposta.put("email", dadosUsuario.get("email"));
-
-    return ResponseEntity.ok(resposta);
-}
 }
