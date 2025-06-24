@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
     <script>
         window.addEventListener("DOMContentLoaded", () => {
-            fetch("/imagens/listar", {
+            fetch("https://flash.up.railway.app/imagens/listar", {
                 method: "GET",
                 credentials: "include"
             })
@@ -41,7 +41,7 @@
 
         window.addEventListener("DOMContentLoaded", () => {
             // Carregar dados do usuário
-            fetch("/usuarios/perfil/dados", {
+            fetch("https://flash.up.railway.app/usuarios/perfil/dados", {
                 method: "GET",
                 credentials: "include"
             })

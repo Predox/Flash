@@ -225,7 +225,7 @@ saveButton.addEventListener("click", async () => {
   formData.append("nome", nomeImagem.trim());
 
   try {
-    const response = await fetch("http://localhost:8080/imagens/upload", {
+    const response = await fetch("https://flash.up.railway.app/imagens/upload", {
       method: "POST",
       body: formData,
       credentials: "include"  // garante que a sessão seja enviada
@@ -282,7 +282,7 @@ saveButton.addEventListener("click", async () => {
       });
   
       try {
-        const response = await fetch("http://localhost:8080/editar", {
+        const response = await fetch("https://flash.up.railway.app/editar", {
           method: "POST",
           body: formData
         });
@@ -371,7 +371,7 @@ resetViewBtn.addEventListener("click", () => {
   // Função para carregar presets
   async function carregarPresets() {
     try {
-      const response = await fetch("http://localhost:8080/presets/todos");
+      const response = await fetch("https://flash.up.railway.app/presets/todos");
 
       if (!response.ok) {
         throw new Error("Erro ao buscar presets");
@@ -414,7 +414,7 @@ resetViewBtn.addEventListener("click", () => {
     });
 
     try {
-      const response = await fetch("http://localhost:8080/presets/adicionar", {
+      const response = await fetch("https://flash.up.railway.app/presets/adicionar", {
         method: "POST",
         body: formData,
       });
@@ -435,7 +435,7 @@ resetViewBtn.addEventListener("click", () => {
   if (presetId) {
     try {
       // Requisição para obter as configurações do preset selecionado
-      const response = await fetch(`http://localhost:8080/presets/${presetId}`);
+      const response = await fetch(`https://flash.up.railway.app/presets/${presetId}`);
 
       if (!response.ok) {
         throw new Error("Erro ao buscar preset");
@@ -472,7 +472,7 @@ resetViewBtn.addEventListener("click", () => {
     if (!confirmacao) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/presets/delete/${selectedValue}`, {
+      const response = await fetch("https://flash.up.railway.app/presets/delete/${selectedValue}", {
         method: "DELETE"
       });
 
