@@ -1,8 +1,10 @@
 com\flash\editorimagem\model\edicoes.class
 com\flash\editorimagem\EditorimagemApplication.class
+com\flash\editorimagem\config\CorsConfiguration$1.class
 com\flash\editorimagem\controller\ImagemController.class
 com\flash\editorimagem\model\imagens.class
 com\flash\editorimagem\controller\PresetController$2.class
+com\flash\editorimagem\config\CorsConfiguration.class
 com\flash\editorimagem\controller\EditorController.class
 com\flash\editorimagem\controller\EdicaoController.class
 com\flash\editorimagem\controller\UsuarioController.class
