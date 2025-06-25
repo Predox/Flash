@@ -519,6 +519,17 @@ body {
   color: #e39a9a;
   transition: .2s;
 }
+
+.sobre-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.sobre-container a{
+  color: #ccc;
+}
   
   
   
