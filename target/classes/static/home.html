@@ -47,6 +47,9 @@
           </button>
         </fieldset>
       </div>
+      <div class="sobre-container">
+        <a href="sobre.html">Sobre</a>
+      </div>
     </aside>
 
     <main>
@@ -208,8 +211,8 @@ document.addEventListener("DOMContentLoaded", function () {
 const saveButton = document.getElementById("saveButton");
 
 saveButton.addEventListener("click", async () => {
-  if (!imagemAtual) {
-    alert("Nenhuma imagem para salvar.");
+  if (!previewImage.src || previewImage.src === "") {
+    alert("Nenhuma imagem editada para salvar.");
     return;
   }
 
@@ -221,14 +224,17 @@ saveButton.addEventListener("click", async () => {
   }
 
   const formData = new FormData();
-  formData.append("arquivo", imagemAtual);
-  formData.append("nome", nomeImagem.trim());
 
   try {
+    // Captura o conteúdo atual do <img id="preview"> como blob
+    const blob = await fetch(previewImage.src).then(res => res.blob());
+    formData.append("arquivo", blob, "imagem_editada.png"); // Nome fictício
+    formData.append("nome", nomeImagem.trim());
+
     const response = await fetch("/imagens/upload", {
       method: "POST",
       body: formData,
-      credentials: "include"  // garante que a sessão seja enviada
+      credentials: "include"
     });
 
     if (!response.ok) {
@@ -435,7 +441,7 @@ resetViewBtn.addEventListener("click", () => {
   if (presetId) {
     try {
       // Requisição para obter as configurações do preset selecionado
-      const response = await fetch("/presets/${presetId}");
+      const response = await fetch(`/presets/${presetId}`);
 
       if (!response.ok) {
         throw new Error("Erro ao buscar preset");
@@ -472,7 +478,7 @@ resetViewBtn.addEventListener("click", () => {
     if (!confirmacao) return;
 
     try {
-      const response = await fetch("/presets/delete/${selectedValue}", {
+      const response = await fetch(`/presets/delete/${selectedValue}`, {
         method: "DELETE"
       });
 
