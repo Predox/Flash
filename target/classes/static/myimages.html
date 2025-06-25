@@ -8,103 +8,174 @@
     <link rel="stylesheet" href="css/style.css">
     <script>
         window.addEventListener("DOMContentLoaded", () => {
-        carregarPerfil();
-        carregarImagens();
-    });
+            carregarPerfil();
+            carregarImagens();
+        });
 
-    function carregarPerfil() {
-        fetch("/usuarios/perfil/dados", {
-            method: "GET",
-            credentials: "include"
-        })
-            .then(res => res.json())
-            .then(dados => {
-                document.getElementById("name-perfil").innerHTML = `<strong>Nome:</strong> <span class="small-text">${dados.nome}</span>`;
-                document.getElementById("email-perfil").innerHTML = `<strong>Email:</strong> <span class="small-text">${dados.email}</span>`;
-            })
-            .catch(err => {
-                console.error("Erro ao carregar perfil:", err);
-                alert("Erro ao carregar dados do perfil.");
-            });
-    }
-
-    function carregarImagens() {
-        fetch("/imagens/listar", {
-            method: "GET",
-            credentials: "include"
-        })
-            .then(res => res.json())
-            .then(imagens => {
-                const container = document.getElementById("perfil-images-container");
-                const labelFotos = document.getElementById("n-photos-perfil");
-
-                labelFotos.innerHTML = `<strong>Fotos editadas:</strong> <span class="small-text">${imagens.length}</span>`;
-
-                imagens.forEach(({ id, nome }) => {
-                    const box = document.createElement("div");
-                    box.classList.add("imagem-box");
-
-                    const img = document.createElement("img");
-                    img.src = `/imagens/imagem/${id}`;
-                    img.classList.add("imagem-perfil");
-
-                    const legenda = document.createElement("div");
-                    legenda.classList.add("imagem-legenda");
-                    legenda.innerHTML = `
-                        <span>${nome}</span>
-                        <div class="botoes-imagem">
-                            <button onclick="baixarImagem(${id}, '${nome}')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
-                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
-                                </svg> 
-                            </button>
-                            <button onclick="deletarImagem(${id})" id="deletarPreset">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                                </svg>
-                            </button>
-                        </div>
-                    `;
-
-                    box.appendChild(img);
-                    box.appendChild(legenda);
-                    container.appendChild(box);
-                });
-            })
-            .catch(err => {
-                console.error("Erro ao carregar imagens:", err);
-                alert("Erro ao carregar imagens.");
-            });
-    }
-
-    function baixarImagem(id, nome) {
-        const link = document.createElement("a");
-        link.href = `/imagens/imagem/${id}`;
-        link.download = `${nome}.jpg`;
-        link.click();
-    }
-
-    function deletarImagem(id) {
-        if (confirm("Tem certeza que deseja excluir esta imagem?")) {
-            fetch(`/imagens/deletar/${id}`, {
-                method: "DELETE",
+        function carregarPerfil() {
+            fetch("/usuarios/perfil/dados", {
+                method: "GET",
                 credentials: "include"
+            })
+                .then(res => res.json())
+                .then(dados => {
+                    document.getElementById("name-perfil").innerHTML = `<strong>Nome:</strong> <span class="small-text">${dados.nome}</span>`;
+                    document.getElementById("email-perfil").innerHTML = `<strong>Email:</strong> <span class="small-text">${dados.email}</span>`;
+                })
+                .catch(err => {
+                    console.error("Erro ao carregar perfil:", err);
+                    alert("Erro ao carregar dados do perfil.");
+                });
+        }
+
+        function carregarImagens() {
+            fetch("/imagens/listar", {
+                method: "GET",
+                credentials: "include"
+            })
+                .then(res => res.json())
+                .then(imagens => {
+                    const container = document.getElementById("perfil-images-container");
+                    const labelFotos = document.getElementById("n-photos-perfil");
+
+                    labelFotos.innerHTML = `<strong>Fotos editadas:</strong> <span class="small-text">${imagens.length}</span>`;
+
+                    imagens.forEach(({ id, nome }) => {
+                        const box = document.createElement("div");
+                        box.classList.add("imagem-box");
+
+                        const img = document.createElement("img");
+                        img.src = `/imagens/imagem/${id}`;
+                        img.classList.add("imagem-perfil");
+
+                        const legenda = document.createElement("div");
+                        legenda.classList.add("imagem-legenda");
+
+                        legenda.innerHTML = `
+                            <div class="nome-legenda">
+                                <span id="nome-imagem-${id}" class="nome-imagem">${nome}</span>
+                                <input type="text" id="input-nome-${id}" value="${nome}" style="display: none;" />
+                                
+                                <button id="btn-editar-${id}" class="btn-editar" onclick="mostrarEdicao(${id})">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                    </svg>    
+                                </button>
+                                <button id="btn-confirmar-${id}" class="btn-confirmar" onclick="confirmarEdicao(${id})" style="display: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                                        <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                                    </svg>    
+                                </button>
+                                <button id="btn-cancelar-${id}" class="btn-cancelar" onclick="cancelarEdicao(${id})" style="display: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                    </svg>    
+                                </button>
+                            </div>
+                            <div class="botoes-imagem">
+                                <button onclick="baixarImagem(${id}, '${nome}')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+                                    </svg> 
+                                </button>
+                                <button onclick="deletarImagem(${id})" id="deletarPreset">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        `;
+
+                        box.appendChild(img);
+                        box.appendChild(legenda);
+                        container.appendChild(box);
+                    });
+                })
+                .catch(err => {
+                    console.error("Erro ao carregar imagens:", err);
+                    alert("Erro ao carregar imagens.");
+                });
+        }
+
+        function baixarImagem(id, nome) {
+            const link = document.createElement("a");
+            link.href = `/imagens/imagem/${id}`;
+            link.download = `${nome}.jpg`;
+            link.click();
+        }
+
+        function deletarImagem(id) {
+            if (confirm("Tem certeza que deseja excluir esta imagem?")) {
+                fetch(`/imagens/deletar/${id}`, {
+                    method: "DELETE",
+                    credentials: "include"
+                })
+                    .then(res => {
+                        if (res.ok) {
+                            alert("Imagem deletada com sucesso!");
+                            location.reload();
+                        } else {
+                            alert("Erro ao deletar imagem.");
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Erro ao deletar imagem:", err);
+                        alert("Erro interno.");
+                    });
+            }
+        }
+
+        function mostrarEdicao(id) {
+            document.getElementById(`nome-imagem-${id}`).style.display = "none";
+            document.getElementById(`input-nome-${id}`).style.display = "inline-block";
+
+            document.getElementById(`btn-editar-${id}`).style.display = "none";
+            document.getElementById(`btn-confirmar-${id}`).style.display = "inline-block";
+            document.getElementById(`btn-cancelar-${id}`).style.display = "inline-block";
+        }
+
+        function cancelarEdicao(id) {
+            const input = document.getElementById(`input-nome-${id}`);
+            const span = document.getElementById(`nome-imagem-${id}`);
+
+            input.style.display = "none";
+            span.style.display = "inline-block";
+
+            document.getElementById(`btn-editar-${id}`).style.display = "inline-block";
+            document.getElementById(`btn-confirmar-${id}`).style.display = "none";
+            document.getElementById(`btn-cancelar-${id}`).style.display = "none";
+        }
+
+        function confirmarEdicao(id) {
+            const novoNome = document.getElementById(`input-nome-${id}`).value.trim();
+            if (!novoNome) {
+                alert("Nome não pode estar vazio.");
+                return;
+            }
+
+            fetch(`/imagens/renomear/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ nome: novoNome })
             })
                 .then(res => {
                     if (res.ok) {
-                        alert("Imagem deletada com sucesso!");
-                        location.reload();
+                        document.getElementById(`nome-imagem-${id}`).textContent = novoNome;
+                        cancelarEdicao(id);
                     } else {
-                        alert("Erro ao deletar imagem.");
+                        alert("Erro ao renomear imagem.");
                     }
                 })
                 .catch(err => {
-                    console.error("Erro ao deletar imagem:", err);
+                    console.error("Erro ao renomear:", err);
                     alert("Erro interno.");
                 });
         }
-    }
     </script>
 </head>
 

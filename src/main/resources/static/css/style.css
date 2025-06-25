@@ -454,15 +454,70 @@ body {
   color: #ff4d4d;
 }
 
-.sobre-container{
-  width: 100%;
+.nome-legenda {
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-top: auto;
+  margin-bottom: 5px;
 }
 
-.sobre-container a{
+.nome-legenda input {
+  font-size: 1em;
+  max-width: 120px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  border: 2px solid #ccc;
+  padding: 2px 2px 2px 4px;
   color: #ccc;
+}
+
+.nome-legenda input:focus {
+  outline: 0;
+}
+
+.btn-editar{
+  background: transparent;
+  border: none;
+  color: #232323;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  transition: .2s;
+}
+
+.btn-editar:hover{
+  color: #ccc;
+  transition: .2s;
+}
+
+.btn-confirmar{
+  background: transparent;
+  border: none;
+  color: #65cb57;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  transition: .2s;
+}
+
+.btn-confirmar:hover{
+  color: #a2e39a;
+  transition: .2s;
+}
+
+.btn-cancelar{
+  background: transparent;
+  border: none;
+  color: #cb5757;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  transition: .2s;
+}
+
+.btn-cancelar:hover{
+  color: #e39a9a;
+  transition: .2s;
 }
   
   

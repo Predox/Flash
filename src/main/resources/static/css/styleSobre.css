@@ -35,6 +35,17 @@
     text-align: start;
     margin-bottom: 5px;
   }
+
+  .sobre-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+  }
+  
+  .sobre-container a{
+    color: #ccc;
+  }
  
   
   
